@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorNameCategory">#6B6A6A</color>
+    <color name="color_view">#C4C1C1</color>
+    <color name="colorBackground_circleView">#F3F0F0</color>
+    <color name="colorTextSet">#242323</color>
+    <color name="colorBackground_check">#80474747</color>
+</resources>

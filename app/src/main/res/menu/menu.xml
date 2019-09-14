@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/item_menu_popular"
+        android:title="Popular"
+        android:icon="@drawable/ic_star"/>
+    <item android:id="@+id/item_menu_category"
+        android:title="Category"
+        android:icon="@drawable/ic_airplane"/>
+    <item android:id="@+id/item_menu_favorite"
+        android:title="Favorite"
+        android:icon="@drawable/ic_heart"/>
+    <item android:id="@+id/item_menu_more"
+        android:title="More"
+        android:icon="@drawable/ic_more"/>
+</menu>

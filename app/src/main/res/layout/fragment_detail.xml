@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/img_detail_wallpaper"
+            android:scaleType="centerCrop"
+            android:src="@drawable/demomo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:paddingVertical="@dimen/_3sdp"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:text="abcdfghj"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_detail_author"
+                android:text="Hello"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_detail_licenca"
+                android:text="1234"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <LinearLayout
+            android:id="@+id/ln_set_wallpaper"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp">
+            <ImageView
+                android:id="@+id/img_detail_icon_set_wallpaper"
+                android:src="@drawable/ic_gallery_wallpaper"
+                android:background="@drawable/border_icon"
+                android:padding="@dimen/_8sdp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_detail_set_wallpaper"
+                android:text="Cài đặt làm hình nền"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/colorTextSet"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <View
+            android:background="@color/color_view"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:id="@+id/ln_save"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp">
+            <ImageView
+                android:id="@+id/img_detail_icon_save"
+                android:src="@drawable/ic_save"
+                android:layout_gravity="center"
+                android:padding="@dimen/_8sdp"
+                android:background="@drawable/border_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_detail_save"
+                android:text="Lưu"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextSet"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <View
+            android:background="@color/color_view"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/ln_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp">
+            <ImageView
+                android:id="@+id/img_detail_icon_favorite"
+                android:src="@drawable/ic_heart"
+                android:layout_gravity="center"
+                android:background="@drawable/border_icon"
+                android:padding="@dimen/_8sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_detail_favorite"
+                android:text="Thêm vào mục yêu thích"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="@color/colorTextSet"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+        <View
+            android:background="@color/color_view"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:layout_height="1dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
