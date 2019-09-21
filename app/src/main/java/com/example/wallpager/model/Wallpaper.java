@@ -9,53 +9,63 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "favorite_table")
-public class Wallpaper {
-    @PrimaryKey()
-    @ColumnInfo(name = "id")
-    @SerializedName("id")
-    private int id;
+import java.io.Serializable;
 
-    @Ignore
+@Entity(tableName = "favorite_table")
+public class Wallpaper implements Serializable {
+
+//    @ColumnInfo(name = "id")
+//    @SerializedName("id")
+//    private int id;
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long id;
+
     @SerializedName("naslovSlike")
     @Expose
     private String naslovSlike;
 
-    @Ignore
     @SerializedName("autor")
     @Expose
     private String autor;
 
-    @Ignore
     @SerializedName("sajtOdakleJeSlika")
     @Expose
     private String sajtOdakleJeSlika;
 
-    @Ignore
     @SerializedName("licenca")
     @Expose
     private String licenca;
 
-    @Ignore
     @SerializedName("licenca_url")
     @Expose
     private String licencaUrl;
 
-    @Ignore
     @SerializedName("urlVelikeSlikeZaPrikaz")
     @Expose
     private String urlVelikeSlikeZaPrikaz;
 
-    @Ignore
+
     @SerializedName("jedinstven_id")
-    @Expose
     private String jedinstvenId;
 
-    public int getId() {
+    @ColumnInfo(name = "liked")
+    private boolean liked = false;
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

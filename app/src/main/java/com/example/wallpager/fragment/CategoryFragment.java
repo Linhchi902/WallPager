@@ -1,12 +1,10 @@
 package com.example.wallpager.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallpager.R;
@@ -14,7 +12,6 @@ import com.example.wallpager.activity.MainActivity;
 import com.example.wallpager.adapter.CategoryAdapter;
 import com.example.wallpager.apputils.AppUtils;
 import com.example.wallpager.base.BaseFragment;
-import com.example.wallpager.interf.ISendData;
 import com.example.wallpager.model.Category;
 import com.example.wallpager.model.CategoryName;
 
@@ -24,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class CategoryFragment extends BaseFragment implements CategoryAdapter.ICategory {
 
@@ -49,11 +45,12 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        rcvCategory = getActivity().findViewById(R.id.rcv_category);
         initFrag();
     }
 
     public void initFrag(){
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        rcvCategory = getActivity().findViewById(R.id.rcv_category);
         mListCategories = getmListCategories();
         adapter = new CategoryAdapter(getContext(),mListCategories);
         adapter.setListener(this);
@@ -167,14 +164,15 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
         bundle.putString("NameCategory", mListCategories.get(position).getUniqueId());
         fmWallpaper.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.panel,fmWallpaper)
-                .hide(this)
-                .show(fmWallpaper)
-                .addToBackStack(null)
-                .commit();
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.panel,fmWallpaper)
+                    .hide(this)
+                    .show(fmWallpaper)
+                    .addToBackStack(null)
+                    .commit();
+
+
 
     }
-
 }

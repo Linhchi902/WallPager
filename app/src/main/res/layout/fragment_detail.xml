@@ -12,7 +12,6 @@
         <ImageView
             android:id="@+id/img_detail_wallpaper"
             android:scaleType="centerCrop"
-            android:src="@drawable/demomo"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <LinearLayout
@@ -79,10 +78,10 @@
 
         </LinearLayout>
         <View
-            android:background="@color/color_view"
+            android:background="@color/color_line"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            android:layout_height="1dp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_height="1px"/>
         <LinearLayout
             android:id="@+id/ln_save"
             android:orientation="horizontal"
@@ -110,10 +109,10 @@
 
         </LinearLayout>
         <View
-            android:background="@color/color_view"
+            android:background="@color/color_line"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            android:layout_height="1dp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_height="1px"/>
         <LinearLayout
             android:orientation="horizontal"
             android:padding="@dimen/_5sdp"
@@ -122,7 +121,7 @@
             android:layout_height="@dimen/_50sdp">
             <ImageView
                 android:id="@+id/img_detail_icon_favorite"
-                android:src="@drawable/ic_heart"
+                android:src="@drawable/ic_heart_white"
                 android:layout_gravity="center"
                 android:background="@drawable/border_icon"
                 android:padding="@dimen/_8sdp"
@@ -130,7 +129,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tv_detail_favorite"
-                android:text="Thêm vào mục yêu thích"
+                android:text="Thêm vào yêu thích"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:textColor="@color/colorTextSet"
@@ -141,10 +140,10 @@
 
         </LinearLayout>
         <View
-            android:background="@color/color_view"
+            android:background="@color/color_line"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            android:layout_height="1dp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_height="1px"/>
 
     </LinearLayout>
 

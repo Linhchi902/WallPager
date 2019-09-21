@@ -1,6 +1,7 @@
 package com.example.wallpager.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,33 +52,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         else {
             holder.tvNameCategory.setText("Default");
         }
-//        if(mCategory.getCategoryIcon() == ""){
-            Glide.with(mContext).load(R.drawable.demo).into(holder.imgIconCategory);
-//        }
-//        else {
-//            Glide.with(mContext).load(mCategory.getCategoryIcon()).into(holder.imgIconCategory);
-//        }
+        setColor(holder.imgIconCategory,position);
+        if(mCategory.getCategoryIcon() == ""){
+            Glide.with(mContext).load(R.drawable.ic_gallery_wallpaper).into(holder.imgIconCategory);
+        }
+        else {
+            Glide.with(mContext).load(mCategory.getCategoryIcon()).into(holder.imgIconCategory);
+        }
 
-//        if (listener != null){
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    listener.itemOnClick(position);
-//                }
-//            });
-//            holder.imgIconArrow.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    listener.arrowItemOnClick(position);
-//                }
-//            });
-//        }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.itemClickListener(position);
-            }
-        });
+        if (listener != null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.itemClickListener(position);
+                }
+            });
+
+        }
 
     }
 
@@ -94,6 +85,41 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             tvNameCategory = itemView.findViewById(R.id.tv_item_name_category);
             imgIconCategory = itemView.findViewById(R.id.img_item_category);
 
+        }
+    }
+
+    private void setColor(ImageView img,int position){
+        switch (position){
+            case 0:
+                img.setBackgroundResource(R.color.color1);
+                break;
+            case 1:
+                img.setBackgroundResource(R.color.color2);
+                break;
+            case 2:
+                img.setBackgroundResource(R.color.color3);
+                break;
+            case 3:
+                img.setBackgroundResource(R.color.color4);
+                break;
+            case 4:
+                img.setBackgroundResource(R.color.color5);
+                break;
+            case 5:
+                img.setBackgroundResource(R.color.color6);
+                break;
+            case 6:
+                img.setBackgroundResource(R.color.color7);
+                break;
+            case 7:
+                img.setBackgroundResource(R.color.color8);
+                break;
+            case 8:
+                img.setBackgroundResource(R.color.color9);
+                break;
+            case 9:
+                img.setBackgroundResource(R.color.color10);
+                break;
         }
     }
 

@@ -1,21 +1,13 @@
-package com.example.wallpager.fragment;
+package com.example.wallpager.activity;
 
-import android.Manifest;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,29 +18,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.wallpager.R;
-import com.example.wallpager.activity.MainActivity;
-import com.example.wallpager.activity.SetWallpaperActivity;
-import com.example.wallpager.base.BaseFragment;
 import com.example.wallpager.base.BaseListImage;
 import com.example.wallpager.db.FavoriteDatabase;
+import com.example.wallpager.fragment.FavoriteFragment;
+import com.example.wallpager.fragment.PopularFragment;
 import com.example.wallpager.model.Wallpaper;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class DetailFragment extends BaseFragment implements View.OnClickListener {
-
-
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tvName;
     private ImageView imgWallpaper;
     private TextView tvAuthor;
@@ -66,39 +50,23 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
     private String url;
     private String name;
     private boolean check;
-
-
     @Override
-    public int getLayoutID() {
-        return R.layout.fragment_detail;
-    }
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        setContentView(R.layout.fragment_detail);
 
-    @Override
-    public String getTitle() {
-        return "Detail";
-    }
-
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        tvName = getActivity().findViewById(R.id.tv_detail_name);
-        tvAuthor = getActivity().findViewById(R.id.tv_detail_author);
-        tvLicenca = getActivity().findViewById(R.id.tv_detail_licenca);
-        imgWallpaper = getActivity().findViewById(R.id.img_detail_wallpaper);
-        lnSetWallpaper = getActivity().findViewById(R.id.ln_set_wallpaper);
-        lnSave = getActivity().findViewById(R.id.ln_save);
-        lnFavorite = getActivity().findViewById(R.id.ln_favorite);
-        tvFavorite = getActivity().findViewById(R.id.tv_detail_favorite);
-        imgIconFavorite = getActivity().findViewById(R.id.img_detail_icon_favorite);
+        tvName = findViewById(R.id.tv_detail_name);
+        tvAuthor = findViewById(R.id.tv_detail_author);
+        tvLicenca = findViewById(R.id.tv_detail_licenca);
+        imgWallpaper = findViewById(R.id.img_detail_wallpaper);
+        lnSetWallpaper = findViewById(R.id.ln_set_wallpaper);
+        lnSave = findViewById(R.id.ln_save);
+        lnFavorite = findViewById(R.id.ln_favorite);
+        tvFavorite = findViewById(R.id.tv_detail_favorite);
+        imgIconFavorite = findViewById(R.id.img_detail_icon_favorite);
 
 
-        Bundle bundle = getArguments();
+        Bundle bundle = getIntent().getBundleExtra("b");
         if (bundle != null) {
 
 
@@ -109,20 +77,20 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
             tvName.setText(name);
             tvAuthor.setText(author);
             tvLicenca.setText(licenca);
-            Glide.with(getContext()).load(url).into(imgWallpaper);
+            Glide.with(this).load(url).into(imgWallpaper);
         }
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(name);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setTitle(name);
 
         mWallpaper = (Wallpaper) bundle.getSerializable("wallpaper");
         check = bundle.getBoolean("like");
         mWallpaper.setLiked(check);
         if (!check) {
             tvFavorite.setText("Thêm vào yêu thích");
-            imgIconFavorite.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_white));
+            imgIconFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_white));
         } else {
             tvFavorite.setText("Xóa khỏi yêu thích");
-            imgIconFavorite.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_like_l));
+            imgIconFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_like_l));
         }
         lnSetWallpaper.setOnClickListener(this);
         lnSave.setOnClickListener(this);
@@ -136,7 +104,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
 //                Intent set = new Intent(getContext(), SetWallpaperActivity.class);
 //                set.putExtra("imgSet", url);
 //                getContext().startActivity(set);
-                BaseListImage.itemSetWallpaperClicked(getContext(), mWallpaper);
+                BaseListImage.itemSetWallpaperClicked(this, mWallpaper);
                 break;
             case R.id.ln_save:
 //                if (checkPermistion()) {
@@ -144,41 +112,30 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
 //                }
                 break;
             case R.id.ln_favorite:
-                MainActivity activity = (MainActivity) getContext();
+                FavoriteFragment activity = new FavoriteFragment();
                 if (mWallpaper.isLiked()) {
                     mWallpaper.setLiked(false);
 
-                    activity.getFmFavorite().itemFavoriteClicked2(mWallpaper);
-                    activity.getFmFavorite().initData();
-                    if (activity.getFmPopular().getAdapter() != null)
-                        activity.getFmPopular().getAdapter().notifyDataSetChanged();
+                    activity.itemFavoriteClicked2(mWallpaper);
+                    activity.initData();
+                    if ((new PopularFragment()).getAdapter() != null)
+                        (new PopularFragment()).getAdapter().notifyDataSetChanged();
                     tvFavorite.setText("Thêm vào yêu thích");
-                    imgIconFavorite.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_white));
+                    imgIconFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_white));
 
                 } else {
                     mWallpaper.setLiked(true);
-                    FavoriteDatabase.getInstance(getContext()).getFavoriteDao().insert(mWallpaper);
-                    activity.getFmFavorite().initData();
-                    if (activity.getFmPopular().getAdapter() != null)
-                        activity.getFmPopular().getAdapter().notifyDataSetChanged();
+                    FavoriteDatabase.getInstance(this).getFavoriteDao().insert(mWallpaper);
+                    activity.initData();
+                    if ((new PopularFragment()).getAdapter() != null)
+                        (new PopularFragment()).getAdapter().notifyDataSetChanged();
 
                     tvFavorite.setText("Xóa khỏi yêu thích");
-                    imgIconFavorite.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_like_l));
+                    imgIconFavorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_like_l));
                 }
                 break;
         }
     }
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (((MainActivity) getActivity()).checkPermistion()) {
-//            saveImageToGallery();
-//        } else {
-//            return;
-//        }
-//    }
 
     private void saveImageToGallery() {
         File direct = new File(Environment
@@ -191,7 +148,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
             Log.d(TAG, "dir created for first time");
         }
 
-        DownloadManager dm = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         Uri downloadUri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(downloadUri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
@@ -202,7 +159,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
                         File.separator + "AAA" + File.separator + url);
 
-        final ProgressDialog dialog = new ProgressDialog(getContext());
+        final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Saving...");
         dialog.show();
         Runnable progressRunnable = new Runnable() {
@@ -211,7 +168,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
             public void run() {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
-                    Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -228,10 +185,10 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
         switch (item.getItemId()) {
             case android.R.id.home:
 //            ((MainActivity) getActivity()).hideFragment(this);
-                Toast.makeText(getContext(), "Ok", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Ok", Toast.LENGTH_LONG).show();
                 break;
             default:
-                Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "fail", Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }

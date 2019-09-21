@@ -1,20 +1,12 @@
 package com.example.wallpager.base;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.example.wallpager.activity.DetailActivity;
 import com.example.wallpager.activity.SetWallpaperActivity;
 import com.example.wallpager.db.FavoriteDatabase;
 import com.example.wallpager.fragment.DetailFragment;
@@ -30,14 +22,19 @@ public class BaseListImage{
         bundle.putString("name", mList.get(position).getNaslovSlike());
         bundle.putString("author",mList.get(position).getAutor());
         bundle.putString("licenca",mList.get(position).getLicenca());
+        bundle.putBoolean("like",mList.get(position).isLiked());
         bundle.putString("img", mList.get(position).getUrlVelikeSlikeZaPrikaz());
+        bundle.putSerializable("wallpaper", mList.get(position));
         fmDetail.setArguments(bundle);
+//        Intent intent = new Intent(context,DetailActivity.class);
+//        intent.putExtra("b",bundle);
+//        context.startActivity(intent);
     }
 
 
-    public static void itemSetWallpaperClicked(int position,Context mContext, List<Wallpaper> mList) {
+    public static void itemSetWallpaperClicked(Context mContext, Wallpaper mWallpaper) {
         final Intent intent = new Intent(mContext.getApplicationContext(), SetWallpaperActivity.class);
-        intent.putExtra("imgSet",mList.get(position).getUrlVelikeSlikeZaPrikaz());
+        intent.putExtra("imgSet",mWallpaper.getUrlVelikeSlikeZaPrikaz());
         final ProgressDialog dialog = new ProgressDialog(mContext);
         dialog.setMessage("Vui Lòng đợi");
         dialog.show();
@@ -57,9 +54,5 @@ public class BaseListImage{
         mContext.startActivity(intent);
     }
 
-    public static void onFavoriteClick(int position, List<Wallpaper> mList, Context context){
-        Wallpaper mWallpaper = mList.get(position);
-        FavoriteDatabase.getInstance(context).getFavoriteDao().insert(mWallpaper);
-    }
 
 }

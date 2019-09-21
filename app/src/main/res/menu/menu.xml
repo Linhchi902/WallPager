@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_airplane"/>
     <item android:id="@+id/item_menu_favorite"
         android:title="Favorite"
-        android:icon="@drawable/ic_heart"/>
+        android:icon="@drawable/ic_heart_white"/>
     <item android:id="@+id/item_menu_more"
         android:title="More"
         android:icon="@drawable/ic_more"/>

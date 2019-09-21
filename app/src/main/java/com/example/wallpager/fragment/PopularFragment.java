@@ -1,8 +1,12 @@
 package com.example.wallpager.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,14 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallpager.R;
 import com.example.wallpager.activity.MainActivity;
-import com.example.wallpager.activity.SetWallpaperActivity;
 import com.example.wallpager.apputils.AppUtils;
 import com.example.wallpager.base.BaseFragment;
 import com.example.wallpager.base.BaseListImage;
 import com.example.wallpager.base.BaseListImageAdapter;
+import com.example.wallpager.db.FavoriteDatabase;
 import com.example.wallpager.interf.IBaseListListener;
 import com.example.wallpager.model.Wallpaper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +30,7 @@ public class PopularFragment extends BaseFragment implements IBaseListListener {
 
     private RecyclerView rcvListImage;
     private List<Wallpaper> mWallpapers;
-    private BaseListImage baseListImage;
     private BaseListImageAdapter adapter;
-    private static PopularFragment instance;
-
-    public static PopularFragment getInstance(){
-        if (instance == null){
-            return null;
-        }
-        return instance;
-    }
 
     @Override
     public int getLayoutID() {
@@ -52,41 +46,65 @@ public class PopularFragment extends BaseFragment implements IBaseListListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initFrag();
+        //appannie.com
+    }
+
+    public void initFrag(){
+        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         rcvListImage = getActivity().findViewById(R.id.rcv_popular);
         adapter = new BaseListImageAdapter(getContext());
         mWallpapers = new ArrayList<>();
-        mWallpapers = AppUtils.getListWallpapers(getActivity(),"popular.json");
+        mWallpapers = AppUtils.getListWallpapers(getActivity(), "popular.json");
+
         adapter.setmList(mWallpapers);
         adapter.setListListener(this);
         rcvListImage.setAdapter(adapter);
-//        baseListImage = new BaseListImage(getContext());
-//        baseListImage.setmList();
-//        baseListImage.setmRecyclerView(rcvListImage);
-//        baseListImage.initViews();
-        //appannie.com
+    }
 
+    public BaseListImageAdapter getAdapter(){
+        return adapter;
     }
 
     @Override
     public void itemClickListener(int position) {
         DetailFragment fmDetail = new DetailFragment();
-        BaseListImage.itemClick(fmDetail,position,mWallpapers);
+        BaseListImage.itemClick(fmDetail, position, mWallpapers);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.panel,fmDetail)
+                .add(R.id.fr_panel, fmDetail)
                 .hide(this)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public void itemFavoriteClicked(int position) {
+    public void itemFavoriteClicked(final Wallpaper mWallpaper) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (mWallpaper.isLiked()){
+            mWallpaper.setLiked(false);
+            activity.getFmFavorite().itemFavoriteClicked2(mWallpaper);
+            activity.getFmFavorite().initData();
+            Toast.makeText(getContext(), "Đã bỏ yêu thích", Toast.LENGTH_SHORT).show();
+        }
+        else  {
 
+
+            mWallpaper.setLiked(true);
+            FavoriteDatabase.getInstance(getContext()).getFavoriteDao().insert(mWallpaper);
+            activity.getFmFavorite().initData();
+            Toast.makeText(getContext(), "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void itemSetWallpaperClicked(int position) {
-        BaseListImage.itemSetWallpaperClicked(position,getContext(),mWallpapers);
+        BaseListImage.itemSetWallpaperClicked(getContext(), mWallpapers.get(position));
     }
 
     @Override
