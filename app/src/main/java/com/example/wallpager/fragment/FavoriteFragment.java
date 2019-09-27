@@ -106,6 +106,7 @@ public class FavoriteFragment extends BaseFragment implements IBaseListListener 
         BaseListImage.itemClick(fmDetail, position, showList());
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
+
                 .add(R.id.panel, fmDetail)
                 .hide(this)
                 .addToBackStack(null)

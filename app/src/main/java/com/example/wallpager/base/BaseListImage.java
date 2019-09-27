@@ -26,9 +26,6 @@ public class BaseListImage{
         bundle.putString("img", mList.get(position).getUrlVelikeSlikeZaPrikaz());
         bundle.putSerializable("wallpaper", mList.get(position));
         fmDetail.setArguments(bundle);
-//        Intent intent = new Intent(context,DetailActivity.class);
-//        intent.putExtra("b",bundle);
-//        context.startActivity(intent);
     }
 
 
