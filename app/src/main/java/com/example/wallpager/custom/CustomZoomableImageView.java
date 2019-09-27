@@ -68,7 +68,7 @@ public class CustomZoomableImageView extends View {
                 final float x = ev.getX(pointerIndex);
                 final float y = ev.getY(pointerIndex);
 
-                // Only move if the ScaleGestureDetector isn't processing a gesture.
+                // Only move if the ScaleGestureDetector isn't processing native_ad_layout gesture.
                 if (!mScaleDetector.isInProgress()) {
                     final float dx = x - mLastTouchX;
                     final float dy = y - mLastTouchY;
@@ -100,7 +100,7 @@ public class CustomZoomableImageView extends View {
                         >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
                 final int pointerId = ev.getPointerId(pointerIndex);
                 if (pointerId == mActivePointerId) {
-                    // This was our active pointer going up. Choose a new
+                    // This was our active pointer going up. Choose native_ad_layout new
                     // active pointer and adjust accordingly.
                     final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
                     mLastTouchX = ev.getX(newPointerIndex);

@@ -6,6 +6,5 @@ public interface IBaseListListener {
     void itemClickListener(int position);
     void itemFavoriteClicked(Wallpaper mWallpaper);
     void itemSetWallpaperClicked(int position);
-    void itemAuthorClicked(int position);
 
 }

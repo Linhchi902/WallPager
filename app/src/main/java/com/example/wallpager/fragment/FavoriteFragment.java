@@ -68,32 +68,33 @@ public class FavoriteFragment extends BaseFragment implements IBaseListListener 
 
     }
 
-    public void init(){
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    public void init() {
         adapter = new BaseListImageAdapter(getContext());
-        rcvFavorite =getActivity().findViewById(R.id.rcv_favorite);
+        rcvFavorite = getActivity().findViewById(R.id.rcv_favorite);
         rcvFavorite.setAdapter(adapter);
         rcvFavorite.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setListListener(this);
         initData();
 
+
     }
 
-    public void initData(){
-            mWallpapers = FavoriteDatabase.getInstance(getContext()).getFavoriteDao().getAllFavorite();
-            if(mWallpapers==null){
-                Log.e("TAG","list null");
-            }
-            if(adapter==null){
-                Log.e("TAG","adapter null");
-            }
-            else
-                adapter.setmList(showList());
+    public void initData() {
+        mWallpapers = FavoriteDatabase.getInstance(getContext()).getFavoriteDao().getAllFavorite();
+        if (mWallpapers == null) {
+            Log.e("TAG", "list null");
+        }
+        if (adapter == null) {
+            Log.e("TAG", "adapter null");
+        } else {
+            adapter.setmList(showList());
+        }
+
     }
 
-    private List<Wallpaper> showList(){
+    private List<Wallpaper> showList() {
         List<Wallpaper> arr = new ArrayList<>();
-        for (int i = mWallpapers.size() - 1;i>=0;i--){
+        for (int i = mWallpapers.size() - 1; i >= 0; i--) {
             arr.add(mWallpapers.get(i));
         }
         return arr;
@@ -102,11 +103,16 @@ public class FavoriteFragment extends BaseFragment implements IBaseListListener 
 
     @Override
     public void itemClickListener(int position) {
-        DetailFragment fmDetail = new DetailFragment();
+        DetailFragment fmDetail = ((MainActivity) getActivity()).getFmDetail();
+        MainActivity.temp = MainActivity.fragPos.Favoryte;
+        MainActivity.isDetail = true;
         BaseListImage.itemClick(fmDetail, position, showList());
+
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .remove(fmDetail)
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .add(R.id.panel, fmDetail)
                 .hide(this)
                 .addToBackStack(null)
@@ -118,14 +124,14 @@ public class FavoriteFragment extends BaseFragment implements IBaseListListener 
         FavoriteDatabase.getInstance(getContext()).getFavoriteDao().delete(mWallpaper);
         initData();
         Toast.makeText(getContext(), "Đã bỏ yêu thích", Toast.LENGTH_SHORT).show();
-        if (((MainActivity) getActivity()).getFmPopular().getAdapter()!=null)
-        ((MainActivity) getActivity()).getFmPopular().getAdapter().notifyDataSetChanged();
+        if (((MainActivity) getActivity()).getFmPopular().getAdapter() != null)
+            ((MainActivity) getActivity()).getFmPopular().getAdapter().notifyDataSetChanged();
     }
 
     public void itemFavoriteClicked2(Wallpaper mWallpaper2) {
 
         for (int i = 0; i < mWallpapers.size(); i++) {
-            if (mWallpapers.get(i).getJedinstvenId().equals(mWallpaper2.getJedinstvenId())){
+            if (mWallpapers.get(i).getJedinstvenId().equals(mWallpaper2.getJedinstvenId())) {
                 FavoriteDatabase.getInstance(getContext()).getFavoriteDao().delete(mWallpapers.get(i));
                 initData();
                 return;
@@ -135,14 +141,10 @@ public class FavoriteFragment extends BaseFragment implements IBaseListListener 
     }
 
 
-
     @Override
     public void itemSetWallpaperClicked(int position) {
-        BaseListImage.itemSetWallpaperClicked(getContext(),mWallpapers.get(position));
+        BaseListImage.itemSetWallpaperClicked(getContext(), mWallpapers.get(position));
     }
 
-    @Override
-    public void itemAuthorClicked(int position) {
 
-    }
 }

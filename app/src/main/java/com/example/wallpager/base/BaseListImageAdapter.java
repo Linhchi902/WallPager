@@ -96,20 +96,6 @@ public class BaseListImageAdapter extends RecyclerView.Adapter<BaseListImageAdap
                 }
             });
 
-            holder.tvAuthor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listListener.itemAuthorClicked(position);
-                }
-            });
-
-            holder.tvLicena.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listListener.itemAuthorClicked(position);
-                }
-            });
-
             holder.imgFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

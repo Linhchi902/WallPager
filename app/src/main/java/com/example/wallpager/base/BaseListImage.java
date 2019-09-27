@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.wallpager.activity.DetailActivity;
 import com.example.wallpager.activity.SetWallpaperActivity;
-import com.example.wallpager.db.FavoriteDatabase;
 import com.example.wallpager.fragment.DetailFragment;
 import com.example.wallpager.model.Wallpaper;
 import java.util.List;
@@ -35,6 +33,7 @@ public class BaseListImage{
         final ProgressDialog dialog = new ProgressDialog(mContext);
         dialog.setMessage("Vui Lòng đợi");
         dialog.show();
+        dialog.setCanceledOnTouchOutside(true);
         Runnable progressRunnable = new Runnable() {
 
             @Override

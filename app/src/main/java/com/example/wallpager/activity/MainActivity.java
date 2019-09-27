@@ -95,9 +95,106 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (checkPermistion()) {
             initViews();
         }
+//        AdSettings.addTestDevice("HASHED ID");
+
+//        loadNativeAd();
     }
 
+    private void loadNativeAd() {
+        // Instantiate native_ad_layout NativeAd object.
+        // NOTE: the placement ID will eventually identify this as your App, you can ignore it for
+        // now, while you are testing and replace it later when you have signed up.
+        // While you are using this temporary code you will only get test ads and if you release
+        // your code like this to the Google Play your users will not receive ads (you will get native_ad_layout no fill error).
+        nativeAd = new NativeAd(this, "YOUR_PLACEMENT_ID");
 
+        nativeAd.setAdListener(new NativeAdListener() {
+            @Override
+            public void onMediaDownloaded(Ad ad) {
+                // Native ad finished downloading all assets
+                Log.e(TAG, "Native ad finished downloading all assets.");
+            }
+
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                // Native ad failed to load
+                Log.e(TAG, "Native ad failed to load: " + adError.getErrorMessage());
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                // Native ad is loaded and ready to be displayed
+                if (nativeAd == null || nativeAd != ad) {
+                    return;
+                }
+                // Inflate Native Ad into Container
+                inflateAd(nativeAd);
+                Log.d(TAG, "Native ad is loaded and ready to be displayed!");
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Native ad clicked
+                Log.d(TAG, "Native ad clicked!");
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Native ad impression
+                Log.d(TAG, "Native ad impression logged!");
+            }
+        });
+
+        // Request an ad
+        nativeAd.loadAd();
+    }
+
+    private void inflateAd(NativeAd nativeAd) {
+
+        nativeAd.unregisterView();
+
+        // Add the Ad view into the ad container.
+        nativeAdLayout = findViewById(R.id.native_ad_container);
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        // Inflate the Ad view.  The layout referenced should be the one you created in the last step.
+        adView = (LinearLayout) inflater.inflate(R.layout.native_ad_layout, nativeAdLayout, false);
+        nativeAdLayout.addView(adView);
+
+        // Add the AdOptionsView
+        LinearLayout adChoicesContainer = findViewById(R.id.ad_choices_container);
+        AdOptionsView adOptionsView = new AdOptionsView(MainActivity.this, nativeAd, nativeAdLayout);
+        adChoicesContainer.removeAllViews();
+        adChoicesContainer.addView(adOptionsView, 0);
+
+        // Create native UI using the ad metadata.
+        AdIconView nativeAdIcon = adView.findViewById(R.id.native_ad_icon);
+        TextView nativeAdTitle = adView.findViewById(R.id.native_ad_title);
+        MediaView nativeAdMedia = adView.findViewById(R.id.native_ad_media);
+        TextView nativeAdSocialContext = adView.findViewById(R.id.native_ad_social_context);
+        TextView nativeAdBody = adView.findViewById(R.id.native_ad_body);
+        TextView sponsoredLabel = adView.findViewById(R.id.native_ad_sponsored_label);
+        Button nativeAdCallToAction = adView.findViewById(R.id.native_ad_call_to_action);
+
+        // Set the Text.
+        nativeAdTitle.setText(nativeAd.getAdvertiserName());
+        nativeAdBody.setText(nativeAd.getAdBodyText());
+        nativeAdSocialContext.setText(nativeAd.getAdSocialContext());
+        nativeAdCallToAction.setVisibility(nativeAd.hasCallToAction() ? View.VISIBLE : View.INVISIBLE);
+        nativeAdCallToAction.setText(nativeAd.getAdCallToAction());
+        sponsoredLabel.setText(nativeAd.getSponsoredTranslation());
+
+        // Create native_ad_layout list of clickable views
+        List<View> clickableViews = new ArrayList<>();
+        clickableViews.add(nativeAdTitle);
+        clickableViews.add(nativeAdCallToAction);
+
+        // Register the Title and CTA button to listen for clicks.
+        nativeAd.registerViewForInteraction(
+                adView,
+                nativeAdMedia,
+                nativeAdIcon,
+                clickableViews);
+    }
 
 
 
@@ -144,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         viewPager.setOffscreenPageLimit(3);
 
+//        showFragment(fmPopular);
+//        addFragment();
     }
 
     @Override
@@ -209,14 +308,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void showFragment(Fragment fragment) {
         hideFr();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left);
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         transaction.show(fragment);
         transaction.commit();
     }
 
     private void hideFr() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left);
+        transaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         transaction.remove(fmDetail);
         transaction.remove(fmWallpaper);
         transaction.commit();
@@ -276,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             .show(fmWallpaper)
                             .commit();
                     isWallpaper = true;
-//                    actionBar.setTitle(fmWallpaper.getNameShow());
+                    actionBar.setTitle(fmWallpaper.getNameShow());
                     actionBar.setDisplayHomeAsUpEnabled(true);
                     break;
             }

@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -66,6 +67,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
     private String url;
     private String name;
     private boolean check;
+    private int req;
 
 
     @Override
@@ -87,6 +89,7 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         tvName = getActivity().findViewById(R.id.tv_detail_name);
         tvAuthor = getActivity().findViewById(R.id.tv_detail_author);
         tvLicenca = getActivity().findViewById(R.id.tv_detail_licenca);
@@ -110,13 +113,14 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
             tvAuthor.setText(author);
             tvLicenca.setText(licenca);
             Glide.with(getContext()).load(url).into(imgWallpaper);
+            req = bundle.getInt("request");
+            mWallpaper = (Wallpaper) bundle.getSerializable("wallpaper");
+            check = bundle.getBoolean("like");
+            mWallpaper.setLiked(check);
         }
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(name);
 
-        mWallpaper = (Wallpaper) bundle.getSerializable("wallpaper");
-        check = bundle.getBoolean("like");
-        mWallpaper.setLiked(check);
         if (!check) {
             tvFavorite.setText("Thêm vào yêu thích");
             imgIconFavorite.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_white));
@@ -169,17 +173,6 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (((MainActivity) getActivity()).checkPermistion()) {
-//            saveImageToGallery();
-//        } else {
-//            return;
-//        }
-//    }
-
     private void saveImageToGallery() {
         File direct = new File(Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
@@ -223,16 +216,5 @@ public class DetailFragment extends BaseFragment implements View.OnClickListener
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-//            ((MainActivity) getActivity()).hideFragment(this);
-                Toast.makeText(getContext(), "Ok", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

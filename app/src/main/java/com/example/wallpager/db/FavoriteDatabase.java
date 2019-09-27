@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.example.wallpager.model.Wallpaper;
 
-@Database(entities = {Wallpaper.class},version = 2)
+@Database(entities = {Wallpaper.class},version = 3)
 public abstract class FavoriteDatabase extends RoomDatabase {
     private static final String DB_NAME = "favorite_db";
     private static FavoriteDatabase instance;

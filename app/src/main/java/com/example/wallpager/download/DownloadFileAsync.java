@@ -36,7 +36,7 @@ public class DownloadFileAsync extends AsyncTask<String, String, String> {
             URLConnection conection = url.openConnection();
             conection.connect();
 
-            // this will be useful so that you can show a tipical 0-100%
+            // this will be useful so that you can show native_ad_layout tipical 0-100%
             // progress bar
             int lenghtOfFile = conection.getContentLength();
 

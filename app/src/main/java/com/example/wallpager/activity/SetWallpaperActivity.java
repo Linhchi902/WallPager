@@ -1,35 +1,23 @@
 package com.example.wallpager.activity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.wallpager.R;
-import com.example.wallpager.custom.CustomZoomableImageView;
 import com.example.wallpager.download.DownloadFileAsync;
-import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class SetWallpaperActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,12 +27,8 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
     private ImageView imgOk;
 
     private String path;
-
-    Bitmap bitmap1, bitmap2 ;
-    DisplayMetrics displayMetrics ;
-    int width, height;
-    BitmapDrawable bitmapDrawable ;
-    WallpaperManager wallpaperManager ;
+    private PhotoViewAttacher viewAttacher;
+    private WallpaperManager wallpaperManager ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +40,10 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
 
         img = findViewById(R.id.img_activity_set_wallpaper);
         Glide.with(this).load(getIntent().getStringExtra("imgSet")).into(img);
+         viewAttacher = new PhotoViewAttacher(img);
+        viewAttacher.update();
+
+
 
         relativeLayout = findViewById(R.id.rlt_layout_snack_bar);
         imgOk = findViewById(R.id.img_ok);
@@ -64,18 +52,6 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
         imgOk.setOnClickListener(this);
 
         wallpaperManager  = WallpaperManager.getInstance(getApplicationContext());
-
-//        bitmapDrawable = (BitmapDrawable) img.getDrawable();
-
-        bitmap1= BitmapFactory.decodeFile(path);
-//        bitmap1 = b;
-
-//        try {
-//            URL url = new URL(path);
-//            img.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
-//        } catch (IOException e) {
-//            //Log.e(TAG, e.getMessage());
-//        }
 
     }
 
@@ -86,7 +62,7 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
             case R.id.img_ok:
                 final ProgressDialog mDialog  = new ProgressDialog(this);
                 mDialog.setMessage("Setting...");
-
+                mDialog.setCanceledOnTouchOutside(false);
 
                 DownloadFileAsync mDownloadFileAsync = new DownloadFileAsync("image" + System.currentTimeMillis() + ".jpg", new DownloadFileAsync.downloadInterface() {
                     @Override
@@ -96,7 +72,6 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onComplete(String path) {
-
                         DisplayMetrics displayMetrics = new DisplayMetrics();
                         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                         int height = displayMetrics.heightPixels;
@@ -111,8 +86,8 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
 
                         // Decode bitmap with inSampleSize set
                         options.inJustDecodeBounds = false;
-                        Bitmap decodedSampleBitmap = BitmapFactory.decodeFile(path, options);
-
+//                        Bitmap decodedSampleBitmap = BitmapFactory.decodeFile(path, options);
+                        Bitmap decodedSampleBitmap = viewAttacher.getVisibleRectangleBitmap();
 
                         WallpaperManager myWallpaperManager
                                 = WallpaperManager.getInstance(getApplicationContext());
@@ -129,7 +104,6 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onStart() {
-//                Toast.makeText(ImageActivity.this,"Start download !",Toast.LENGTH_SHORT).show();
                         mDialog.show();
                     }
                 });
@@ -140,6 +114,8 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
             case R.id.img_close:
                 finish();
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     }
 
@@ -157,7 +133,7 @@ public class SetWallpaperActivity extends AppCompatActivity implements View.OnCl
             final int widthRatio = Math.round((float) width / (float) reqWidth);
 
             // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
+            // native_ad_layout final image with both dimensions larger than or equal to the
             // requested height and width.
             inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }

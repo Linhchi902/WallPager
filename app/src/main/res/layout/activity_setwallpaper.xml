@@ -5,14 +5,9 @@
 
     <ImageView
         android:id="@+id/img_activity_set_wallpaper"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <!--<com.example.wallpager.custom.CustomZoomableImageView-->
-        <!--android:id="@+id/img_set"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
 
     <RelativeLayout
         android:id="@+id/rlt_layout_snack_bar"

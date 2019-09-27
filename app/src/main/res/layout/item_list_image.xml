@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/img_list_image"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/_200sdp"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -77,5 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/color_line" />
+
 
 </LinearLayout>

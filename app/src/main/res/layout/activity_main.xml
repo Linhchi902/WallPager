@@ -2,54 +2,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_main"
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-
-
-
-
-        <FrameLayout
-            android:id="@+id/fr_panel"
-
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <RelativeLayout
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_nvg_view"
+                />
+            <LinearLayout
                 android:id="@+id/panel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_above="@+id/bottom_nvg_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_above="@+id/bottom_nvg_view"/>
 
 
+            <!--<com.google.android.material.tabs.TabLayout-->
+            <!--android:id="@+id/tab"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_nvg_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                android:padding="@dimen/_2sdp"
+                app:itemIconTint="@drawable/listen_bottom_nvg"
+                app:itemTextColor="@drawable/listen_bottom_nvg"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/menu" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="50dp">
+
+                <com.facebook.ads.NativeAdLayout
+                    android:id="@+id/native_ad_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+            <!--<include android:id="@+id/splash" layout="@layout/activity_splash"/>-->
+        </RelativeLayout>
 
 
-        <!--<com.google.android.material.tabs.TabLayout-->
-        <!--android:id="@+id/tab"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nvg_view"
-            app:menu="@menu/menu"
-            app:itemTextColor="@drawable/listen_bottom_nvg"
-            app:itemIconTint="@drawable/listen_bottom_nvg"
-            android:background="@android:color/white"
-            android:layout_alignParentBottom="true"
-            app:labelVisibilityMode="labeled"
-            android:padding="@dimen/_2sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <!--<include android:id="@+id/splash" layout="@layout/activity_splash"/>-->
-    </RelativeLayout>
-        </FrameLayout>
 
 </LinearLayout>

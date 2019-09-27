@@ -2,6 +2,7 @@ package com.example.wallpager.fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CategoryFragment extends BaseFragment implements CategoryAdapter.ICategory {
 
@@ -48,21 +50,20 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
         initFrag();
     }
 
-    public void initFrag(){
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    public void initFrag() {
         rcvCategory = getActivity().findViewById(R.id.rcv_category);
         mListCategories = getmListCategories();
-        adapter = new CategoryAdapter(getContext(),mListCategories);
+        adapter = new CategoryAdapter(getContext(), mListCategories);
         adapter.setListener(this);
         rcvCategory.setAdapter(adapter);
     }
 
-    private List<Category> getmListCategories(){
+    private List<Category> getmListCategories() {
 
         try {
-            JSONObject object = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(),"wallpapers_categories.json"));
+            JSONObject object = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(), "wallpapers_categories.json"));
             JSONArray jsonArray = object.getJSONArray("categories");
-            for (int i = 0; i< jsonArray.length() ; i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String unique_id = jsonObject.getString("unique_id");
                 int locked_for_days = jsonObject.getInt("locked_for_days");
@@ -87,9 +88,10 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
 
         return mListCategories;
     }
+
     private List<CategoryName> getCategoryName() {
         try {
-            JSONObject obj = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(),"wallpapers_categories.json"));
+            JSONObject obj = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(), "wallpapers_categories.json"));
             JSONArray m_jArry = obj.getJSONArray("categories");
             for (int i = 0; i < m_jArry.length(); i++) {
                 JSONObject ob_category = m_jArry.getJSONObject(i);
@@ -159,20 +161,27 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
 
     @Override
     public void itemClickListener(int position) {
-        WallpaperByCategoryFragment fmWallpaper = new WallpaperByCategoryFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("NameCategory", mListCategories.get(position).getUniqueId());
-        fmWallpaper.setArguments(bundle);
+
+        if (position == 0) {
+            ((MainActivity) getActivity()).showFragment(((MainActivity) getActivity()).getFmPopular());
+            ((MainActivity) getActivity()).getBottomNavigationView().setSelectedItemId(R.id.item_menu_popular);
+        } else {
+            WallpaperByCategoryFragment fmWallpaper = ((MainActivity) getActivity()).getFmWallpaper();
+            Bundle bundle = new Bundle();
+            bundle.putString("NameCategory", mListCategories.get(position).getUniqueId());
+            bundle.putString("name", mListCategories.get(position).getNameByLanguage(Locale.getDefault().getLanguage()));
+            fmWallpaper.setArguments(bundle);
+
+            MainActivity.isWallpaper = true;
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.panel,fmWallpaper)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .add(R.id.panel, fmWallpaper)
                     .hide(this)
                     .show(fmWallpaper)
                     .addToBackStack(null)
                     .commit();
-
-
-
+        }
     }
 }
