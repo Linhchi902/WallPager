@@ -1,56 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/img_list_image"
-        android:src="@drawable/demo"
-        android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
-   <LinearLayout
-       android:orientation="horizontal"
-       android:layout_width="match_parent"
-       android:padding="8dp"
-       android:gravity="center_vertical"
-       android:layout_height="wrap_content">
-       <LinearLayout
-           android:layout_weight="3"
-           android:layout_width="0dp"
-           android:orientation="vertical"
-           android:layout_height="wrap_content">
-           <TextView
-               android:id="@+id/tv_name"
-               android:text="Hello"
-               android:textSize="16sp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-           <TextView
-               android:id="@+id/tv_author"
-               android:text="Hello"
-               android:textSize="11sp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-           <TextView
-               android:id="@+id/tv_licenca"
-               android:text="Hello"
-               android:textSize="11sp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
-       </LinearLayout>
-       <ImageView
-           android:id="@+id/img_item_favorite"
-           android:src="@drawable/ic_heart"
-           android:padding="@dimen/_8sdp"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
-       <Button
-           android:id="@+id/btn_set_wall_pager"
-           android:text="Set wall pager"
-           android:textSize="10sp"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content" />
-   </LinearLayout>
+        android:layout_height="@dimen/_200sdp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_65sdp"
+        android:background="@color/colorBackgroundItemWallpaper"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_2sdp"
+                android:text="Hello"
+                android:textColor="@color/colorNameWallpaper"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_2sdp"
+                android:text="Hello"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/tv_licenca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_2sdp"
+                android:text="Hello"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_item_favorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="@dimen/_11sdp"
+            android:src="@drawable/ic_heart" />
+
+        <Button
+            android:id="@+id/btn_set_wall_pager"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_24sdp"
+            android:background="@drawable/background_button_set"
+            style="?android:attr/borderlessButtonStyle"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:text="Set wall pager"
+            android:textAllCaps="false"
+            android:textColor="@color/colorTextButtonSet"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line" />
+
 
 </LinearLayout>

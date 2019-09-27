@@ -11,11 +11,13 @@ import com.example.wallpager.model.Wallpaper;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface IFavoriteDao {
 
     @Insert
-    long insert(Wallpaper mWallpaper);
+    void insert(Wallpaper mWallpaper);
 
     @Delete
     void delete(Wallpaper mWallpaper);
@@ -26,8 +28,15 @@ public interface IFavoriteDao {
     @Query("SELECT * FROM favorite_table")
     List<Wallpaper> getAllFavorite();
 
-    @Query("SELECT * FROM favorite_table WHERE id = :idWallpager LIMIT 1")
-    Wallpaper getFavoriteById(int idWallpager);
+
+//    @Query("UPDATE favorite_table SET id =1 WHERE id= :id")
+//    void setFavorite(long id);
+//
+//    @Query("UPDATE favorite_table SET id =0 WHERE id= :id")
+//    void delFavorite(long id);
+
+//    @Query("SELECT * FROM favorite_table WHERE jedinstvenId = :idWallpager LIMIT 1")
+//    Wallpaper getFavoriteById(int idWallpager);
 
 
 }

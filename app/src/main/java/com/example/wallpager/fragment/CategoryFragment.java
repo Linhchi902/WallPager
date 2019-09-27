@@ -1,12 +1,11 @@
 package com.example.wallpager.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wallpager.R;
@@ -14,7 +13,6 @@ import com.example.wallpager.activity.MainActivity;
 import com.example.wallpager.adapter.CategoryAdapter;
 import com.example.wallpager.apputils.AppUtils;
 import com.example.wallpager.base.BaseFragment;
-import com.example.wallpager.interf.ISendData;
 import com.example.wallpager.model.Category;
 import com.example.wallpager.model.CategoryName;
 
@@ -49,23 +47,23 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        rcvCategory = getActivity().findViewById(R.id.rcv_category);
         initFrag();
     }
 
-    public void initFrag(){
+    public void initFrag() {
+        rcvCategory = getActivity().findViewById(R.id.rcv_category);
         mListCategories = getmListCategories();
-        adapter = new CategoryAdapter(getContext(),mListCategories);
+        adapter = new CategoryAdapter(getContext(), mListCategories);
         adapter.setListener(this);
         rcvCategory.setAdapter(adapter);
     }
 
-    private List<Category> getmListCategories(){
+    private List<Category> getmListCategories() {
 
         try {
-            JSONObject object = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(),"wallpapers_categories.json"));
+            JSONObject object = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(), "wallpapers_categories.json"));
             JSONArray jsonArray = object.getJSONArray("categories");
-            for (int i = 0; i< jsonArray.length() ; i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String unique_id = jsonObject.getString("unique_id");
                 int locked_for_days = jsonObject.getInt("locked_for_days");
@@ -90,9 +88,10 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
 
         return mListCategories;
     }
+
     private List<CategoryName> getCategoryName() {
         try {
-            JSONObject obj = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(),"wallpapers_categories.json"));
+            JSONObject obj = new JSONObject(AppUtils.loadJSonFromAsset(getActivity(), "wallpapers_categories.json"));
             JSONArray m_jArry = obj.getJSONArray("categories");
             for (int i = 0; i < m_jArry.length(); i++) {
                 JSONObject ob_category = m_jArry.getJSONObject(i);
@@ -162,19 +161,27 @@ public class CategoryFragment extends BaseFragment implements CategoryAdapter.IC
 
     @Override
     public void itemClickListener(int position) {
-        WallpaperByCategoryFragment fmWallpaper = new WallpaperByCategoryFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("NameCategory", mListCategories.get(position).getUniqueId());
-        fmWallpaper.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.panel,fmWallpaper)
-                .hide(this)
-                .show(fmWallpaper)
-                .addToBackStack(null)
-                .commit();
+        if (position == 0) {
+            ((MainActivity) getActivity()).showFragment(((MainActivity) getActivity()).getFmPopular());
+            ((MainActivity) getActivity()).getBottomNavigationView().setSelectedItemId(R.id.item_menu_popular);
+        } else {
+            WallpaperByCategoryFragment fmWallpaper = ((MainActivity) getActivity()).getFmWallpaper();
+            Bundle bundle = new Bundle();
+            bundle.putString("NameCategory", mListCategories.get(position).getUniqueId());
+            bundle.putString("name", mListCategories.get(position).getNameByLanguage(Locale.getDefault().getLanguage()));
+            fmWallpaper.setArguments(bundle);
 
+            MainActivity.isWallpaper = true;
+
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .add(R.id.panel, fmWallpaper)
+                    .hide(this)
+                    .show(fmWallpaper)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
-
 }
