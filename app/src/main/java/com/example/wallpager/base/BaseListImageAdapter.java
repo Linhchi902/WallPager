@@ -63,7 +63,8 @@ public class BaseListImageAdapter extends RecyclerView.Adapter<BaseListImageAdap
     public void onBindViewHolder(@NonNull final BaseViewHolder holder, final int position) {
         final Wallpaper mWallpaper = mList.get(position);
 
-        Glide.with(holder.img).load(mWallpaper.getUrlVelikeSlikeZaPrikaz()).into(holder.img);
+        Glide.with(holder.img).load(mWallpaper.getUrlVelikeSlikeZaPrikaz()).centerCrop()
+                .placeholder(R.drawable.ic_gallery_wallpaper).into(holder.img);
         holder.tvName.setText(mWallpaper.getNaslovSlike());
         holder.tvAuthor.setText("by " + mWallpaper.getAutor());
         holder.tvLicena.setText(mWallpaper.getLicenca());

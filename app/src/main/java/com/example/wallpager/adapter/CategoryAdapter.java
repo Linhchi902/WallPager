@@ -54,7 +54,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
         setColor(holder.imgIconCategory,position);
         if(mCategory.getCategoryIcon() == ""){
-            Glide.with(mContext).load(R.drawable.ic_gallery_wallpaper).into(holder.imgIconCategory);
+            Glide.with(mContext).load(R.drawable.ic_gallery_wallpaper)
+                    .into(holder.imgIconCategory);
         }
         else {
             Glide.with(mContext).load(mCategory.getCategoryIcon()).into(holder.imgIconCategory);
